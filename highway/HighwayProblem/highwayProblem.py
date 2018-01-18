@@ -6,6 +6,7 @@ import math
 from simanneal import Annealer
 
 from highway.model import Model
+from highway.visualization import show_model
 
 
 def distance(a, b):
@@ -23,12 +24,15 @@ class HighwayProblem(Annealer):
     def move(self):
         """Chooses new point for highway"""
         i = random.randint(0, len(self.state.highway) - 1)
-        self.state.randomize_highway_point(self, i)
+        self.state.randomize_highway_point(i)
+        show_model(self.state)
 
     def energy(self):
         """Calculates the length of the route."""
         e = 0
         """Highway cost"""
         for i, highway_point in enumerate(self.state.highway):
-            if highway_point.next_position is not None:
-                e += distance(highway_point, highway_point.next_position)
+            if highway_point.next is not None:
+                e += distance(highway_point, highway_point.next)
+
+        return e
