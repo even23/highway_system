@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 import argparse
 
+from highway.HighwayProblem.highwayProblem import HighwayProblem
 from highway.model.Model import Model
 from highway.visualization import show_model
 
@@ -19,6 +20,12 @@ def main():
     model.randomize()
     print(model)
     show_model(model)
+    hp = HighwayProblem(model)
+    hp.steps = 5
+    hp.Tmax = 12000.0
+    hp.Tmin = 2.5
+    hp.updates = 100
+    state, e = hp.anneal()
 
 
 if __name__ == '__main__':
