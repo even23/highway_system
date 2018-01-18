@@ -2,9 +2,14 @@ from __future__ import print_function
 
 import random
 
+import math
 from simanneal import Annealer
 
 from highway.model import Model
+
+
+def distance(a, b):
+    return math.hypot(a.position.x - b.position.x, a.position.y - b.position.y)
 
 
 class HighwayProblem(Annealer):
@@ -22,5 +27,8 @@ class HighwayProblem(Annealer):
 
     def energy(self):
         """Calculates the length of the route."""
-
-        """TODO"""
+        e = 0
+        """Highway cost"""
+        for i, highway_point in enumerate(self.state.highway):
+            if highway_point.next_position is not None:
+                e += distance(highway_point, highway_point.next_position)
