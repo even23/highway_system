@@ -5,7 +5,7 @@ import numpy as np
 
 
 class Point:
-    def __init__(self, x_=0, y_=0):
+    def __init__(self, x_=.0, y_=.0):
         self.x = x_
         self.y = y_
 
@@ -50,13 +50,14 @@ def linear_cost(x):
 
 
 def exponential_cost(x):
-    return 2 ** x - 1
+    return 1.2 ** x - 1
 
 
 class Model:
     MAX_X = 1000
     MAX_Y = 1000
     MAX_DISTANCE = math.sqrt(MAX_Y ** 2 + MAX_X ** 2)
+    INCONSISTENT_PENALTY = 1e10
 
     @property
     def highway_cost(self):
@@ -152,6 +153,14 @@ class Model:
                         (exit1.position.y + exit2.position.y) / 2.0
                     )
                     exit1.position = exit2.position = avq_position
+
+    def calculate_inconsistent_penalty(self):
+        penalty = .0
+
+        for highway_point in self.highway:
+            pass
+
+        return penalty
 
     @staticmethod
     def parse_file_with_cities(filename):

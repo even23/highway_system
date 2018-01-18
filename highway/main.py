@@ -1,9 +1,9 @@
-#!/usr/bin/bash
+#!/usr/bin/env python
 import argparse
 
-from highway.heuristic.highway_problem import HighwayProblem
-from highway.model.model import Model
-from highway.visualization import show_model
+from heuristic.highway_problem import HighwayProblem
+from model.model import Model
+from visualization import init_visualisation
 
 
 def main():
@@ -17,12 +17,12 @@ def main():
     cities = Model.parse_file_with_cities(args.cities)
     model = Model(cities, args.k, args.d)
 
+    init_visualisation()
+
     model.randomize()
     model.calculate_exits()
 
     run_algorithm(model)
-
-    show_model(model)
 
 
 def run_algorithm(model):

@@ -1,13 +1,15 @@
 import matplotlib.pyplot as plt
 
-from highway.model.model import Model
+from model.model import Model
+
+
+def init_visualisation():
+    plt.ion()
+    plt.figure(figsize=(5, 5))
 
 
 def show_model(model: Model):
-    plt.figure(figsize=(5, 5))
     plt.axis([0, model.MAX_X, 0, model.MAX_Y])
-    plt.gca().set_aspect('equal', adjustable='box')
-
     cities_x = [city.x for city in model.cities]
     cities_y = [city.y for city in model.cities]
 
@@ -32,4 +34,5 @@ def show_model(model: Model):
         p2 = highway_exit.city
         plt.plot([p1.x, p2.x], [p1.y, p2.y], 'k--')
 
-    plt.show()
+    plt.pause(0.1)
+    plt.clf()

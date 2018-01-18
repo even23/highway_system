@@ -2,8 +2,8 @@ import random
 
 from simanneal import Annealer
 
-from highway.model import model
-from highway.visualization import show_model
+from model import model
+from visualization import show_model
 
 
 class HighwayProblem(Annealer):
