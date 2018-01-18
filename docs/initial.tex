@@ -1,0 +1,138 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{polski}
+\usepackage{amssymb}
+
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=3cm,left=3.5cm,right=3.5cm,marginparwidth=2cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{ALHE - Specyfikacja projektu}
+\author{Kaczmarek Kamil, Lewczuk Grzegorz}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Analiza problemu utworzenia sieci autostrad pomiędzy miastami oraz implementacja algorytmu optymalizującego rozwiązanie
+\end{abstract}
+
+\section{Opis zagadnienia}
+
+\begin{quote}
+Przygotować algorytm poszukujący optymalnej sieci autostrad tworzącą siatkę połączeń pomiędzy miastami z danego zbioru - położenia miast są nam znane. Rozwiązanie powinno uwzględniać miejsca zjazdów (nie mogą one znajdować się zbyt blisko siebie) oraz pozwalać na przecinanie się autostrad nie tylko w miastach.
+\end{quote}
+
+\subsection{Założenia}
+\begin{quote}
+\begin{enumerate}
+\item Przestrzeń - jest to przestrzeń $\mathbb{Z}^2$
+\item Miasto - punkt [\textit{x, y}] znajdujący się w przestrzeni
+\item Parametr M określający liczbę miast (miasta są znane)
+\item Punkt zjazdu - punkt [\textit{x, y}] znajdujęcy się na autostradzie 
+\item Zjazd - odcinek w linii prostej łączący miasto z najbliższym Punktem zjazdu na autostradzie
+\item Parametr K określający liczbę punktów składających się na odcinki sieci autostrad
+\item Parametr D określający minimalną odległość pomiędzy dwoma Punktami zjazdu (jeśli wynaczone punkty zjazdu znajdą się zbyt blisko siebie to zostaną zastąpione jednym)
+\end{enumerate}
+\end{quote}
+\section{Przestrzeń poszukiwań i sąsiedztwo}
+
+\begin{quote}
+Element przestrzeni poszukiwań to wektor K-elementowy, na który skłądają się krotki postaci [\textit{x, y, w}] reprezentujące wierzchołki łamanej tworzącej autostradę. \linebreak Para (\textit{x, y}) stanowi współrzędne tego punktu na płaszczyźnie. Zmienna \textit{w} określa, który wierzchołek jest połączony odcinkiem z aktualnym. Przyjmuje ona wartości od \textit{-1} do \textit{K-1} i oznacza, do wierzchołka o jakim indeksie występuje połączenie. Wierzchołki numerowane są od 0. (np. \textit{w}=1 oznacza, że rozpatrywany wierzchołek łączy się z wierzchołkiem o indeksie 1, \textit{w}=-1 oznacza, że wierzchołek nie łączy się z żadnym innym). Tak zdefiniowana przestrzeń dopuszcza obustronne połączenia, ale zostaną one wyeliminowane przez metaheurystykę - nie wnoszą nic do struktury sieci autostad, a jedynie podnoszą koszt. Przestrzeń oprócz rozwiązań prawidłowych zawiera również rozwiązania niedopuszczalne, czyli takie, w których nie istnieje połącznie między wszystkimi miastami. Warunek ten zostanie osiągnięty dzięki odpowiednio sformułowanej funkcji celu. Sasiądami \textit{k}-tego stopnia będziemy nazywać wektory różniące się \textit{k} krotkami.
+\end{quote}
+
+\section{Funkcja celu}
+
+\begin{quote}
+Parametry funkcji celu:
+\begin{enumerate}
+\item Położenie miast
+\item Wektor określający sieć autostrad
+\item Funkcja kosztu budowy autostrady, zależna od długości
+\item Funkcja kosztu budowy zjazdu, zależna od długości 
+\end{enumerate}
+
+Wartość funkcji celu będzie liczona na podstawie:
+\begin{enumerate}
+\item Kosztu budowy sieci autostrad
+\item Kosztu budowy zjazdów
+\item Kary związanej z niezapewnieniem spójności autostrady
+\end{enumerate}f
+
+Funkcja kosztu budowy autostrady ${f(x)}$ będzie rosła liniowo, zależnie od ${k}$ kosztu jednego kilometra autostrady\newline
+Funkcja kosztu budowy zjazdu ${g(x)}$ musi szybciej rosnąć od ${f(x)}$ (wielomianowa lub wykładnicza), jednak do pewnej wartości ${x}$ musi być bardziej opłacalna niż ${f(x)}$, aby zapewnić jak najkrótsze zjazdy z autostrad\newline
+Dodatkowo sprawdzane będzie połączenie pomiędzy każdymi dwoma dowolnymi miastami. Jeżeli takie połączenie nie będzie dostępne, do funkcj celu zostanie dodana kara ${P}$ dostatecznie duża, aby to rozwiązanie odrzucić\newline
+Wartość funkcji celu będzie sumą tych czynników\newline
+Optymalizacja będzie polegała na minimalizacji kosztu budowy sieci autostrad
+
+\subsection{Przykład}
+Niech ${V}$ będzie wektorem Miast o długości ${M}$\newline
+Niech ${A}$ będzie wektorem krotek [\textit{x, y, w}] o długości ${K}$\newline
+Niech ${f(a)}$ będzie funkcją kosztu budowy odcinka autostrady o długości \textit{a}\newline
+Niech ${g(b)}$ będzie funkcją kosztu budowy zjazdu o długości \textit{b}\newline
+Niech ${P}$ będzie karą braku połączenia pomiędzy miastami\newline
+Niech ${k(V, A)}$ będzie funkcją kosztu budowy sieci autostrad\newline
+
+Dla:\newline
+${M = 3}$\newline
+${V = [(1, 1), (3, 0), (2, 4)]}$\newline
+${K = 3}$\newline
+${A = [(1, 2, 1), (2, 2, 2), (3, 2, -1)]}$\newline
+${f(a) = a}$\newline
+${g(b) = 2^b - 1}$\newline
+${P = 10000}$\newline
+
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+\draw[latex-latex, thin, draw=gray] (0,0)--(4,0) node [right] {$x$};
+\draw[latex-latex, thin, draw=gray] (0,0)--(0,4) node [above] {$y$};
+\draw[thick] (1, 2)--(3, 2);
+\node [blue] at (1, 2) {$\circ$};
+\node [blue] at (2, 2) {$\circ$};
+\node [blue] at (3, 2) {$\circ$};
+
+\node [blue] at (1, 1) {\textbullet};
+\draw [dashed, blue] (1, 1)--(1, 2);
+\node [blue] at (3, 0) {\textbullet};
+\draw [dashed, blue] (3, 0)--(3, 2);
+\node [blue] at (2, 4) {\textbullet};
+\draw [dashed, blue] (2, 4)--(2, 2);
+\draw [dotted, gray] (0, 0) grid (4,4);
+
+\end{tikzpicture}
+
+Długość autostrady: ${7}$. Długość zjazdów ${1, 2, 2}$\newline
+${f(a) = 7}$\newline
+${g(z_1) = 2^1 - 1 = 1}$\newline
+${g(z_2) = g(z_3) = 2^2 - 1 = 3}$\newline
+${g(b) = 1 + 3 + 3 = 7}$\newline
+${k(V, A) = 7 + 7 = 14}$\newline
+
+Spójność autostrady jest zapewniona, więc nie została doliczona kara ${P}$.
+\end{quote}
+
+\section{Metody optymalizacji}
+
+\begin{quote}
+Do rozwiązania zadania planowane jest użycie metody przeszukiwania ze zmiennym sąsiedztwem
+(VNS) oraz symulowanego wyżarzania.
+\end{quote}
+
+\section{Sposób przeprowadzania eksperymetów}
+
+\begin{enumerate}
+\item Testy w początkowej fazie eksperymentów będą przeprowadzana na małych problemach. Dzięki temu można będzie uzyskiwane podczas nich wyniki porównać z tymi uzyskanymi ręcznie i upewnić się, że algorytm działa zgodnie z oczekiwaniami i daje poprawne rezultaty.
+\item Testy właściwe zostaną przeprowadzone dla parametru M równego 10, 20, 50.
+\item Wyniki eksperymentów będą przedstawiane w formie tekstowej oraz graficznej, aby w łatwy sposób zweryfikować wyniki.
+\end{enumerate}
+
+\end{document}
