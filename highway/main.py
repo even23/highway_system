@@ -24,11 +24,8 @@ def main():
     hp.steps = 5
     hp.Tmax = 12000.0
     hp.Tmin = 2.5
+    hp.updates = 100
     state, e = hp.anneal()
-
-    print()
-    print(e)
-    show_model(model)
 
 
 if __name__ == '__main__':

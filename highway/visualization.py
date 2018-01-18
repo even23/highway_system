@@ -20,4 +20,6 @@ def show_model(model: Model):
             p1 = highway_point.position
             p2 = highway_point.next.position
             plt.plot([p1.x, p2.x], [p1.y, p2.y], 'k-')
-    plt.show()
+    plt.draw()
+    plt.pause(0.5)
+    plt.clf()

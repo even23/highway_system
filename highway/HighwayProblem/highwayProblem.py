@@ -25,6 +25,7 @@ class HighwayProblem(Annealer):
         """Chooses new point for highway"""
         i = random.randint(0, len(self.state.highway) - 1)
         self.state.randomize_highway_point(i)
+       # print(self.state)
         show_model(self.state)
 
     def energy(self):
