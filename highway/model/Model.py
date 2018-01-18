@@ -41,20 +41,24 @@ class Model:
         self.highway = [HighwayPoint() for _ in range(highway_size)]
         self.exits = []
 
+    def randomize_highway_point(self, i):
+        highway_point = self.highway[i]
+        highway_point.position.x = rnd.randint(0, self.MAX_X)
+        highway_point.position.y = rnd.randint(0, self.MAX_X)
+
+        allowed_indices = list(range(-1, len(self.highway)))
+        allowed_indices.remove(i)
+        random_highway_point = rnd.choice(allowed_indices)
+
+        if random_highway_point != -1:
+            highway_point.next = self.highway[random_highway_point]
+
+        else:
+            highway_point.next = None
+
     def randomize(self):
         for i, highway_point in enumerate(self.highway):
-            highway_point.position.x = rnd.randint(0, self.MAX_X)
-            highway_point.position.y = rnd.randint(0, self.MAX_X)
-
-            allowed_indices = list(range(-1, len(self.highway)))
-            allowed_indices.remove(i)
-            random_highway_point = rnd.choice(allowed_indices)
-
-            if random_highway_point != -1:
-                highway_point.next = self.highway[random_highway_point]
-
-            else:
-                highway_point.next = None
+            self.randomize_highway_point(i)
 
     @staticmethod
     def parse_file_with_cities(filename):
