@@ -2,6 +2,7 @@
 import argparse
 
 from highway.model.Model import Model
+from highway.visualization import show_model
 
 
 def main():
@@ -17,6 +18,7 @@ def main():
 
     model.randomize()
     print(model)
+    show_model(model)
 
 
 if __name__ == '__main__':
