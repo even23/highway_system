@@ -1,8 +1,6 @@
-from __future__ import print_function
-
+import math
 import random
 
-import math
 from simanneal import Annealer
 
 from highway.model import Model
@@ -25,7 +23,8 @@ class HighwayProblem(Annealer):
         """Chooses new point for highway"""
         i = random.randint(0, len(self.state.highway) - 1)
         self.state.randomize_highway_point(i)
-       # print(self.state)
+        self.state.calculate_exits()
+        # print(self.state)
         show_model(self.state)
 
     def energy(self):

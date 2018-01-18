@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 import argparse
 
-from highway.HighwayProblem.highwayProblem import HighwayProblem
+from highway.heuristic.highway_problem import HighwayProblem
 from highway.model.Model import Model
 from highway.visualization import show_model
 
@@ -18,6 +18,8 @@ def main():
     model = Model(cities, args.k, args.d)
 
     model.randomize()
+    model.calculate_exits()
+
     print(model)
     show_model(model)
     hp = HighwayProblem(model)
