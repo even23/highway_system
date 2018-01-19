@@ -3,7 +3,7 @@ import argparse
 
 from heuristic.highway_problem import HighwayProblem
 from model.model import Model
-from visualization import init_visualisation
+from visualization import init_visualisation, show_model
 
 
 def main():
@@ -21,17 +21,20 @@ def main():
 
     model.randomize()
     model.calculate_exits()
+    model.update_highway_points_connections()
 
     run_algorithm(model)
 
 
 def run_algorithm(model):
     hp = HighwayProblem(model)
-    hp.steps = 10
+    hp.steps = 100
     hp.Tmax = 12000.0
     hp.Tmin = 2.5
     hp.updates = 100
     state, e = hp.anneal()
+    show_model(state)
+
     print(state)
     print(e)
 

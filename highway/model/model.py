@@ -20,6 +20,7 @@ class HighwayPoint:
     def __init__(self, position_: Point = None, next_: 'HighwayPoint' = None):
         self.position = position_ or Point()
         self.next = next_
+        self.connections = set()
 
     @property
     def distance(self):
@@ -54,10 +55,10 @@ def exponential_cost(x):
 
 
 class Model:
-    MAX_X = 1000
-    MAX_Y = 1000
+    MAX_X = 100
+    MAX_Y = 100
     MAX_DISTANCE = math.sqrt(MAX_Y ** 2 + MAX_X ** 2)
-    INCONSISTENT_PENALTY = 1e10
+    INCONSISTENT_PENALTY = 1e100
 
     @property
     def highway_cost(self):
@@ -96,8 +97,7 @@ class Model:
     def calculate_exits(self):
         self.exits = list()
 
-        highway_parts = []
-        self.get_highway_parts(highway_parts)
+        highway_parts = self.get_highway_parts()
 
         for city in self.cities:
             min_distance = self.MAX_DISTANCE
@@ -115,12 +115,16 @@ class Model:
 
         self.check_exits()
 
-    def get_highway_parts(self, lines):
+    def get_highway_parts(self):
+        parts = []
+
         for highway_point in self.highway:
             if highway_point.next:
                 p1 = highway_point.position
                 p2 = highway_point.next.position
-                lines.append(((p1, p2), highway_point))
+                parts.append(((p1, p2), highway_point))
+
+        return parts
 
     def closest_point_on_line(self, point, line):
         p1 = np.array([line[0].x, line[0].y])
@@ -136,8 +140,14 @@ class Model:
         if new_point.x < min(p1[0], p2[0]):
             new_point = Point(*min(p1, p2, key=lambda p: p[0]))
 
-        if new_point.x > max(p1[0], p2[0]):
+        elif new_point.x > max(p1[0], p2[0]):
             new_point = Point(*max(p1, p2, key=lambda p: p[0]))
+
+        elif new_point.y < min(p1[1], p2[1]):
+            new_point = Point(*max(p1, p2, key=lambda p: p[1]))
+
+        elif new_point.y > max(p1[1], p2[1]):
+            new_point = Point(*max(p1, p2, key=lambda p: p[1]))
 
         return new_point
 
@@ -154,13 +164,45 @@ class Model:
                     )
                     exit1.position = exit2.position = avq_position
 
+    def update_highway_points_connections(self):
+        for highway_point in self.highway:
+            highway_point.connections = set()
+
+        for highway_point_1 in self.highway:
+            for highway_point_2 in self.highway:
+                if highway_point_1.next == highway_point_2:
+                    highway_point_1.connections.add(highway_point_2)
+                    highway_point_2.connections.add(highway_point_1)
+
     def calculate_inconsistent_penalty(self):
         penalty = .0
+        used = []
 
-        for highway_point in self.highway:
-            pass
+        for hp1 in self.highway:
+            for hp2 in self.highway:
+                if (hp1, hp2) not in used and not self.path_exists(hp1, hp2, set()):
+                    penalty += self.INCONSISTENT_PENALTY
+                used.append((hp2, hp1))
 
         return penalty
+
+    def path_exists(self, hp1, hp2, used=set()):
+        used.add(hp1)
+
+        if hp1 == hp2:
+            return True
+
+        if not hp1.connections:
+            return False
+
+        if hp2 in hp1.connections:
+            return True
+
+        for conn in hp1.connections - used:
+            if self.path_exists(conn, hp2, used):
+                return True
+
+        return False
 
     @staticmethod
     def parse_file_with_cities(filename):

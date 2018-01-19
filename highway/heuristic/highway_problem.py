@@ -19,6 +19,7 @@ class HighwayProblem(Annealer):
         point_to_move = random.randint(0, len(self.state.highway) - 1)
         self.state.randomize_highway_point(point_to_move)
         self.state.calculate_exits()
+        self.state.update_highway_points_connections()
 
         show_model(self.state)
 
@@ -34,5 +35,7 @@ class HighwayProblem(Annealer):
         """Exits cost"""
         for highway_exit in self.state.exits:
             energy += self.state.exit_cost(highway_exit.distance)
+
+        energy += self.state.calculate_inconsistent_penalty()
 
         return energy

@@ -34,5 +34,5 @@ def show_model(model: Model):
         p2 = highway_exit.city
         plt.plot([p1.x, p2.x], [p1.y, p2.y], 'k--')
 
-    plt.pause(0.1)
+    plt.pause(0.000001)
     plt.clf()
