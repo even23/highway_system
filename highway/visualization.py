@@ -7,10 +7,14 @@ from model.model import Model
 def init_visualisation():
     plt.ion()
     plt.figure(figsize=(5, 5))
+    plt.gcf().canvas.set_window_title('Highway System')
 
 
 def show_model(model: Model, wait_for_action=False):
     plt.axis([0, config.MAX_X, 0, config.MAX_Y])
+    plt.title('{} cities, {} highway points, {} iterations'.format(
+        len(model.cities), len(model.highway), config.STEPS)
+    )
     cities_x = [city.x for city in model.cities]
     cities_y = [city.y for city in model.cities]
 
