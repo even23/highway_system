@@ -3,7 +3,7 @@ import argparse
 
 import config
 from heuristic.simulated_annealing import SimulatedAnnealing
-from model.model import Model, parse_file_with_cities, generate_cities
+from model.model import Model, parse_file_with_cities, generate_random_cities
 from visualization import init_visualisation, show_model
 
 
@@ -24,7 +24,7 @@ def main():
         config.STEPS = args.steps
 
     if args.cities == 'random':
-        cities = generate_cities()
+        cities = generate_random_cities()
     else:
         cities = parse_file_with_cities(args.cities)
 

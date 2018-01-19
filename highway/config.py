@@ -19,4 +19,4 @@ def linear_cost(x):
 
 
 def exponential_cost(x):
-    return 1.5 ** x - 1
+    return 2 ** x - 1

@@ -17,7 +17,7 @@ def parse_file_with_cities(filename):
     return cities
 
 
-def generate_cities(m=config.DEFAULT_M):
+def generate_random_cities(m=config.DEFAULT_M):
     cities = list()
 
     for i in range(m):
@@ -47,8 +47,8 @@ class HighwayPoint:
         self.connections = set()
 
     @property
-    def distance(self):
-        return self.position.distance(self.next.position)
+    def segmant_length(self):
+        return self.position.distance(self.next.position) if self.next.position else 0
 
     def __repr__(self):
         next_position = self.next.position if self.next else None
@@ -63,7 +63,7 @@ class HighwayExit:
         self.highway_point = highway_point_
 
     @property
-    def distance(self):
+    def length(self):
         return self.position.distance(self.city)
 
     def __repr__(self):
@@ -98,11 +98,11 @@ class Model:
         # Highway cost
         for highway_point in self.highway:
             if highway_point.next is not None:
-                cost += self.highway_cost(highway_point.distance)
+                cost += self.highway_cost(highway_point.segmant_length)
 
         # Exits cost
         for highway_exit in self.exits:
-            cost += self.exit_cost(highway_exit.distance)
+            cost += self.exit_cost(highway_exit.length)
 
         # Inconsistent highway penalty
         cost += self.calculate_inconsistent_penalty()
