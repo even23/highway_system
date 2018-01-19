@@ -1,42 +1,54 @@
 #!/usr/bin/env python
 import argparse
 
-from heuristic.highway_problem import HighwayProblem
-from model.model import Model
+import config
+from heuristic.simulated_annealing import SimulatedAnnealing
+from model.model import Model, parse_file_with_cities, generate_cities
 from visualization import init_visualisation, show_model
 
 
 def main():
     parser = argparse.ArgumentParser(description='Highway system')
-    parser.add_argument('cities', type=str, help='filename with cities positions')
+    parser.add_argument('cities', type=str, help='filename with cities positions, "random" for random cities')
     parser.add_argument('k', type=int, help='number of highway points')
     parser.add_argument('d', type=float, help='minimal distance between exits')
+    parser.add_argument('-s', '--steps', type=int, help='steps to perform')
+    parser.add_argument('--show', action='store_true', help='show model through iterations')
 
     args = parser.parse_args()
 
-    cities = Model.parse_file_with_cities(args.cities)
-    model = Model(cities, args.k, args.d)
+    if args.show:
+        config.SHOW_ITERATIONS = args.show
+        init_visualisation()
+    if args.steps:
+        config.STEPS = args.steps
 
-    init_visualisation()
+    if args.cities == 'random':
+        cities = generate_cities()
+    else:
+        cities = parse_file_with_cities(args.cities)
 
+    run_algorithm(cities, args.k, args.d)
+
+
+def run_algorithm(cities, k, d):
+    model = Model(cities, k, d)
     model.randomize()
-    model.calculate_exits()
-    model.update_highway_points_connections()
 
-    run_algorithm(model)
+    algorithm = SimulatedAnnealing(model)
+    state, energy = algorithm.run()
+
+    show_results(energy, state)
 
 
-def run_algorithm(model):
-    hp = HighwayProblem(model)
-    hp.steps = 100
-    hp.Tmax = 12000.0
-    hp.Tmin = 2.5
-    hp.updates = 100
-    state, e = hp.anneal()
-    show_model(state)
-
+def show_results(energy, state):
     print(state)
-    print(e)
+    print('Total cost: {}'.format(energy))
+
+    if not config.SHOW_ITERATIONS:
+        init_visualisation()
+
+    show_model(state, True)
 
 
 if __name__ == '__main__':

@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+import config
 from model.model import Model
 
 
@@ -8,8 +9,8 @@ def init_visualisation():
     plt.figure(figsize=(5, 5))
 
 
-def show_model(model: Model):
-    plt.axis([0, model.MAX_X, 0, model.MAX_Y])
+def show_model(model: Model, wait_for_action=False):
+    plt.axis([0, config.MAX_X, 0, config.MAX_Y])
     cities_x = [city.x for city in model.cities]
     cities_y = [city.y for city in model.cities]
 
@@ -34,5 +35,9 @@ def show_model(model: Model):
         p2 = highway_exit.city
         plt.plot([p1.x, p2.x], [p1.y, p2.y], 'k--')
 
-    plt.pause(0.000001)
-    plt.clf()
+    if wait_for_action:
+        plt.draw()
+        plt.waitforbuttonpress()
+    else:
+        plt.pause(0.000001)
+        plt.clf()
