@@ -1,2 +1,4 @@
 simanneal
 argparse
+matplotlib
+numpy
