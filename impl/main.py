@@ -2,7 +2,7 @@
 import argparse
 
 import config
-from heuristic.simulated_annealing import SimulatedAnnealing
+from metaheuristic.simulated_annealing import SimulatedAnnealing
 from model.model import Model, parse_file_with_cities, generate_random_cities
 from visualization import init_visualisation, show_model
 
