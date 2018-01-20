@@ -271,6 +271,7 @@ Poniżej wyniki funkcji celu dla przykładowego uruchomienia dla liczby kroków 
 \end{itemize}
 
 Oraz wizualizacja wyników:
+
 \begin{figure}[h!]
 \centering
 \includegraphics[width=12cm]{50_cities}
@@ -279,12 +280,17 @@ Oraz wizualizacja wyników:
 
 \subsection{Uruchamianie testów}
 
+
 Wszystkie testy mogą być w prosty sposób odtworzone na podstawie dostarczonych źródeł. W katalogu \texttt{tests} znajdują się podkatalogi zawierające współrzędne miast dla każdego testowanego przypadku. 
 
-Dodatkowo utworzono skrytp \texttt{run\_tests.sh}, który wykona jeden przebieg wszystkich opisanych testów, dla ilości kroków 10, 100, 1000, 10 000. Dla każdego wyniku zostanie wyświetlony wynik w postaci wizualnej oraz utworzony plik zawierający rozwiązanie, np. \texttt{tests/10\_cities/100steps}:
+Dodatkowo utworzono skrytp \texttt{run\_tests.sh}, który wykona jeden przebieg wszystkich opisanych testów, dla ilości kroków 10, 100, 1000, 10 000. Dla każdego wyniku zostanie wyświetlony wynik w postaci wizualnej oraz utworzony plik zawierający uzyskane rozwiązanie, np. \texttt{tests/10\_cities/100steps}:
 \begin{lstlisting}[basicstyle=\ttfamily\selectfont\footnotesize]
-Cities: [(4, 87), (17, 11), (13, 0), (4, 16), (21, 19), (34, 19), (36, 12), (98, 88), (28, 8), (97, 46)]
-Highway: [[(36, 53) -> (18, 31)], [(4, 25) -> (94, 48)], [(15, 12) -> (3, 74)], [(77, 29) -> (15, 12)], [(3, 74) -> (17, 30)], [(98, 91) -> (36, 53)], [(94, 48) -> (98, 91)], [(17, 30) -> (36, 53)], [(13, 93) -> (98, 91)], [(18, 31) -> (3, 74)]]
+Cities: [(4, 87), (17, 11), (13, 0), (4, 16), (21, 19), (34, 19), 
+(36, 12), (98, 88), (28, 8), (97, 46)]
+Highway: [[(36, 53) -> (18, 31)], [(4, 25) -> (94, 48)], [(15, 12) -> (3, 74)],
+ [(77, 29) -> (15, 12)], [(3, 74) -> (17, 30)], [(98, 91) -> (36, 53)], 
+ [(94, 48) -> (98, 91)], [(17, 30) -> (36, 53)], [(13, 93) -> (98, 91)], 
+ [(18, 31) -> (3, 74)]]
 Total cost: 7730.180890387163
 \end{lstlisting}
 
