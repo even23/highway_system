@@ -26,7 +26,7 @@
 \maketitle
 
 \begin{abstract}
-Analiza problemu utworzenia sieci autostrad pomiędzy miastami oraz implementacja algorytmu optymalizującego rozwiązanie
+Analiza problemu utworzenia sieci autostrad pomiędzy miastami oraz implementacja algorytmu optymalizującego rozwiązanie.
 \end{abstract}
 
 \section{Opis zagadnienia}
@@ -37,7 +37,7 @@ Przygotować algorytm poszukujący optymalnej sieci autostrad tworzącą siatkę
 
 \section{Zmiany dotyczące założeń}
 
-Następiły następujące zmiany w założeniach projektu w celu poprawności działania implementacji problemu:
+Wprowadzono następujące zmiany w założeniach projektu w celu poprawności działania implementacji problemu:
 
 \begin{itemize}
 \item Przestrzeń została ograniczona do kwadratu o wymiarach 100x100 – współrzędne x,y z zakresu [0, 100).
@@ -53,7 +53,7 @@ Do implementacji projektu użyto języka Python 3.6 wraz z dodatkowymi bibliotek
 \item matplotlib - wyświetlanie wyników w formia graficznej na wykresie.
 \item numpy - wykonywanie obliczeń i przekształceń na wektorach.
 \item argparse - przygotowanie argumentów wprowadzanych podczas uruchomienia programu.
-\item simanneal - zewnętrzna implementacja algorytmu symulowanego wyrzażania, opisanego poniżej.
+\item simanneal - zewnętrzna implementacja algorytmu symulowanego wyżarzania, opisanego poniżej.
 \end{itemize}
 
 \subsection{Model}
@@ -66,11 +66,11 @@ Utworzono klasę modelu, zawierającą atrybuty:
 \item pomocniczą listę punktów zjazdów z autostrady.
 \end{itemize}
 
-Dodatkowo w modelu zdefiniowane są metody pozwalające na znalezienie sąsiada oraz obliczenia funkcji kosztu używane w algorytmie symulowanego wyrzażania. Oprócz tego są także metody pomocnicze.
+Dodatkowo w modelu zdefiniowane są metody pozwalające na znalezienie sąsiada oraz obliczenia funkcji kosztu używane w algorytmie symulowanego wyżarzania. Oprócz tego są także metody pomocnicze.
 
 \subsection{Uruchamianie}
 
-Dzięki modułowi argparse, zdefiniowano interfejs użytkownika pozwalający na dodanie w prosty sposób argumentów wywołania programu. Plik główny projektu, to \texttt{main.py}. Dodano do niego linijkę \texttt{\#!/usr/bin/env python}, aby był uruchamialny z poziomu powłoki.
+Dzięki modułowi argparse, zdefiniowano interfejs użytkownika pozwalający na dodanie w prosty sposób argumentów wywołania programu. Plik główny projektu, to \texttt{main.py}. Dodano do niego linijkę \texttt{\#!/usr/bin/env python}, aby był możliwy do uruchomienia z poziomu powłoki.
 
 Po wpisaniu \texttt{./main.py -h} mozna uzyskać pomoc dotyczącą działania programu:
 \begin{lstlisting}[basicstyle=\ttfamily\selectfont\footnotesize]
@@ -101,13 +101,13 @@ Program zawiera także plik konfiguracyjny określający wartości:
 \begin{itemize}
 \item domylna ilość miast - w przypadku tworzenia losowych współrzędnych.
 \item maksymalne wartości współrzędnych X oraz Y.
-\item ustawienia dotyczące algorytmu symulowanego wyrzażania.
+\item ustawienia dotyczące algorytmu symulowanego wyżarzania.
 \item wzór funkcji liniowej oraz wykładniczej kosztu.
 \end{itemize}
 
 \subsection{Wizualizacja wyników}
 
-Do wizualizacji wyników uzyto biblioteki matplotlib. Przykładowy wykres wygląda następująco.
+Do wizualizacji wyników użyto biblioteki matplotlib. Przykładowy wykres wygląda następująco.
 \begin{figure}[h]
 \centering
 \includegraphics[width=12cm]{sample}
@@ -152,7 +152,7 @@ W celu dobranie najlepszych parametrów temperatury przeprowadzono próby, któr
 \begin{figure}[h]
 \centering
 \includegraphics[width=12cm]{temp}
-\caption{Wykres zależności funkcji celu od parametrów temperatury dla symulowanego wyrzażania}
+\caption{Wykres zależności funkcji celu od parametrów temperatury dla symulowanego wyżarzania}
 \end{figure}\newline
 Najlepsze wyniki otrzymano dla Tmax =12000 oraz Tmin = 2.
 
@@ -175,7 +175,7 @@ Po upewnieniu się, że model został poprawnie zdefiniowany dla metody optymali
 
 \subsection{Test 10 miast}
 
-W pierwszym kroku psrawdzono przypadek dla 10 miast. Dodatkowe parametry to:
+W pierwszym kroku sprawdzono przypadek dla 10 miast. Dodatkowe parametry to:
 \begin{itemize}
 \item M = 10
 \item K = 10
@@ -191,7 +191,7 @@ Uzyskano następujące wartości funkcji celu w zależności od liczby kroków:
 \item 10000 - 421.19
 \end{itemize}
 
-Można zauważyć bardzo szybki spadek wartości funkcji kosztu dla poczętkowych testów, później wartości wolniej się zmniejszają, ponieważ są już bliżej rozwiązania optymalnego.\newline
+Można zauważyć bardzo szybki spadek wartości funkcji kosztu dla początkowych testów, później wartości wolniej się zmniejszają, ponieważ są już bliżej rozwiązania optymalnego.\newline
 Poniżej grafika reprezentująca wyniki dla każdej z prób.
 \begin{figure}[h!]
 \centering
@@ -218,7 +218,7 @@ W kolejnym kroku przeprowadzono testy kompleksowe zawierające więcej porówna�
 Dla każdej rozpatrywanej liczby kroków przeprowadzono po 10 niezależnych testów, a wynik minimalizacji kosztu autostrady widoczny na wykresie jest średnią z otrzymanych danych.
 Dla liczby kroków STEPS = 100 000 czas działania algorytmu wynosił średnio 13 minut, natomiast dla steps = 10 000 około 1,5 min.\newline
 
-Na podstawie wykresu przedstawionego na Rysunku~\ref{fig:wyk25} można zauważyć, że wartość funkcji celu sukcesywnie maleje wraz z ilością wykonwnych kroków przez algorytm. Początkowe wartości są bardzo wysokie przez co nieakceptowalne. Jednak po wykonaniu ponad 1000 kroków wartości funkcji kosztu wolniej maleją, co oznacza że ciężej znaleźć lepsze rozwiązanie.
+Na podstawie wykresu przedstawionego na Rysunku~\ref{fig:wyk25} można zauważyć, że wartość funkcji celu sukcesywnie maleje wraz z ilością wykonanych kroków przez algorytm. Początkowe wartości są bardzo wysokie przez co nieakceptowalne. Jednak po wykonaniu ponad 1000 kroków wartości funkcji kosztu wolniej maleją, co oznacza że ciężej znaleźć lepsze rozwiązanie.
 \vskip 5cm
 \begin{figure}[h!]
 \centering
