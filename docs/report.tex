@@ -40,7 +40,7 @@ Przygotować algorytm poszukujący optymalnej sieci autostrad tworzącą siatkę
 Wprowadzono następujące zmiany w założeniach projektu w celu poprawności działania implementacji problemu:
 
 \begin{itemize}
-\item Przestrzeń została ograniczona do kwadratu o wymiarach 100x100 – współrzędne x,y z zakresu [0, 100).
+\item Przestrzeń została ograniczona do kwadratu o wymiarach 101x101 – współrzędne x,y z zakresu [0, 100].
 \item Współrzędne miast i wierzchołki łamanej budującej autostradę są liczbami całkowitymi, natomiast wyliczane punkty zjazdu mogą być punktami o współrzędnych rzeczywistych.
 \item Losowy sąsiad dla punktów z przestrzeni poszukiwań jest wyznaczany poprzez wylosowanie jednego z wierzchołków autostrady. Następnie losowane są dla niego nowe współrzędne x, y oraz parametr w, który oznacza numer wierzchołka autostrady, z którym jest połączony dany punkt.
 \item Funkcja kosztu jest obliczana zgodnie założeniami dokumentacji wstępnej. Doprecyzowaniu uległa jedynie kara za niezachowanie spójności autostrady, która została ustalona jako 1e100.
@@ -132,18 +132,21 @@ Metoda optymalizacji zawarta w module simanneal jest konfigurowana przez następ
 
 Implementacja ta jest klasyczną wersją symulowanego wyżarzania. Przebieg kroku algorytmu jest następujący:
 \begin{enumerate}
-\item Wybierz punkt z y z sąsiedztwa punktu x : y = selRandom(N(x))
-\item Jeśli q(y) < q(x), to zapamiętaj punkt y : x = y, gdzie q() – funkcja celu
-\item Jeśli q(y) >= q(x) i rand() < p, to również zapamiętaj punkt y: x = y, gdzie p = exp(- |q(y) – q(x)|/T).
+\item Wybierz punkt $y$ z sąsiedztwa punktu $x$ : $y$ = selRandom$(N(x))$
+\item Jeśli $q(y) < q(x)$, to zapamiętaj punkt $y$ : $x = y$, gdzie $q()$ – funkcja celu
+\item Jeśli $q(y) \ge q(x)$ i rand() < $p$, to również zapamiętaj punkt $y$: $x$ = $y$, 
+
+gdzie $p$ = $exp\left(\frac{- |q(y)-q(x)|}{T}\right)$.
 \item Algorytm kończy się po wykonaniu zdefiniowanej liczby kroków.
 \item Temperatura zmienia się w kolejnych krokach zgodnie z zależnością:
-T = Tmax * exp(Tfactor * i / steps), gdzie
+
+$T = T_{max} * exp\left(\frac{T_{factor} * i }{steps}\right)$, gdzie:
 \begin{itemize}
-\item  i – numer aktualnego kroku algorytmu
-\item Tfactor – współczynnik obliczany w momencie inicjalizacji algorytmu
-\item Tfactor = -log(Tmax/Tmin)
+\item  $i$ – numer aktualnego kroku algorytmu
+\item $T_{factor}$ – współczynnik obliczany w momencie inicjalizacji algorytmu
+\item $T_{factor} = -log\left(\frac{T_{max}}{T_{min}}\right)$
 \end{itemize}
-Tak zdefiniowana temperatura zmienia się w czasie kolejnych korków algorytmu od wartości Tmax do Tmin. Jest to funkcja malejąca.
+Tak zdefiniowana temperatura zmienia się w czasie kolejnych kroków algorytmu od wartości $T_{max}$ do $T_{min}$. Jest to funkcja malejąca.
 \end{enumerate}
 
 \section{Temperatura}
@@ -154,7 +157,7 @@ W celu dobranie najlepszych parametrów temperatury przeprowadzono próby, któr
 \includegraphics[width=12cm]{temp}
 \caption{Wykres zależności funkcji celu od parametrów temperatury dla symulowanego wyżarzania}
 \end{figure}\newline
-Najlepsze wyniki otrzymano dla Tmax =12000 oraz Tmin = 2.
+Najlepsze wyniki otrzymano dla $T_{max}$=12000 oraz $T_{min}$=2.
 
 \section{Testy}
 Poprawność działania algorytmu została przetestowana na przykładzie o następujących założeniach. Przestrzeń zmniejszona do kwadratu o wymiarach 10x10, M=4, k=2, d=0.
@@ -163,7 +166,7 @@ Poprawność działania algorytmu została przetestowana na przykładzie o nast�
 \includegraphics[width=6cm]{test}
 \caption{Wynik podstawowego przypadku sprawdzającego poprawność algorytmu}
 \end{figure}\newline
-Dla liczby kroków steps = 10000 uzyskiwano rozwiązanie optymalne - minimum globalne funkcji kosztu wynoszące 7 (koszt autostrady = 3, koszt zjazdów = 4 * (2\^1 - 1) = 4).\newline
+Dla liczby kroków steps = 10000 uzyskiwano rozwiązanie optymalne - minimum globalne funkcji kosztu wynoszące 7 (koszt autostrady = 3, koszt zjazdów = 4 * ($2^1$ - 1) = 4).\newline
 
 Dodatkowo przetestowano przypadek dla M = 25 oraz K = 10 po wykonaniu 100 00 kroków algorytmu. Poniżej efekt.
 \begin{figure}[h!]
