@@ -1,5 +1,15 @@
 import math
 
+
+# Model
+def linear_cost(x):
+    return x
+
+
+def exponential_cost(x):
+    return 2 ** x - 1
+
+
 DEFAULT_M = 10
 MAX_X = 100
 MAX_Y = 100
@@ -8,15 +18,8 @@ INCONSISTENT_PENALTY = 1e100
 
 SHOW_ITERATIONS = False
 
+# Simulated Annealing
 STEPS = 1000
 MAX_TEMPERATURE = 12000.0
 MIN_TEMPERATURE = 2.5
 UPDATES = 100
-
-
-def linear_cost(x):
-    return x
-
-
-def exponential_cost(x):
-    return 2 ** x - 1

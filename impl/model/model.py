@@ -47,7 +47,7 @@ class HighwayPoint:
         self.connections = set()
 
     @property
-    def segmant_length(self):
+    def segment_length(self):
         return self.position.distance(self.next.position) if self.next.position else 0
 
     def __repr__(self):
@@ -98,7 +98,7 @@ class Model:
         # Highway cost
         for highway_point in self.highway:
             if highway_point.next is not None:
-                cost += self.highway_cost(highway_point.segmant_length)
+                cost += self.highway_cost(highway_point.segment_length)
 
         # Exits cost
         for highway_exit in self.exits:

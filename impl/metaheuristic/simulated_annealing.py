@@ -6,12 +6,10 @@ from visualization import show_model
 
 
 class SimulatedAnnealing(Annealer):
-    """Test annealer with a highway problem.
-    """
+    """Annealer with a highway problem"""
 
-    # pass extra data (the distance matrix) into the constructor
     def __init__(self, state: model):
-        super(SimulatedAnnealing, self).__init__(state)  # important!
+        super(SimulatedAnnealing, self).__init__(state)
 
     def run(self):
         self.steps = config.STEPS
@@ -27,7 +25,7 @@ class SimulatedAnnealing(Annealer):
         self.state.move()
 
     def energy(self):
-        """Calculates the length of the route."""
+        """Calculates the length of the route"""
 
         return self.state.calculate_cost()
 
